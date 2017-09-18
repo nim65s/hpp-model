@@ -52,7 +52,7 @@ namespace hpp {
     typedef vector_t Configuration_t;
     typedef Eigen::Ref <const Configuration_t> ConfigurationIn_t;
     typedef Eigen::Ref <Configuration_t> ConfigurationOut_t;
-    typedef boost::shared_ptr <Configuration_t> ConfigurationPtr_t;
+    typedef std::shared_ptr <Configuration_t> ConfigurationPtr_t;
     typedef Eigen::Ref <const vector_t> vectorIn_t;
     typedef Eigen::Ref <vector_t> vectorOut_t;
     typedef Eigen::Matrix<value_type, Eigen::Dynamic, Eigen::Dynamic> matrix_t;
@@ -67,12 +67,12 @@ namespace hpp {
 
     typedef Body* BodyPtr_t;
     typedef std::vector<Body*> BodyVector_t;
-    typedef boost::shared_ptr <CollisionObject> CollisionObjectPtr_t;
+    typedef std::shared_ptr <CollisionObject> CollisionObjectPtr_t;
     typedef std::list <CollisionObjectPtr_t> ObjectVector_t;
-    typedef boost::shared_ptr <Device> DevicePtr_t;
-    typedef boost::shared_ptr <const Device> DeviceConstPtr_t;
+    typedef std::shared_ptr <Device> DevicePtr_t;
+    typedef std::shared_ptr <const Device> DeviceConstPtr_t;
     typedef std::vector <DistanceResult> DistanceResults_t;
-    typedef boost::shared_ptr <HumanoidRobot> HumanoidRobotPtr_t;
+    typedef std::shared_ptr <HumanoidRobot> HumanoidRobotPtr_t;
     typedef Joint* JointPtr_t;
     typedef JointAnchor* JointAnchorPtr_t;
     typedef JointRotation* JointRotationPtr_t;
@@ -90,10 +90,10 @@ namespace hpp {
     typedef const JointTranslation <3>* JointTranslation3ConstPtr_t;
     typedef std::map <std::string, JointPtr_t> JointByName_t;
     typedef std::vector <JointPtr_t> JointVector_t;
-    typedef boost::shared_ptr <Gripper> GripperPtr_t;
+    typedef std::shared_ptr <Gripper> GripperPtr_t;
     typedef std::vector <GripperPtr_t> Grippers_t;
     typedef fcl::Transform3f Transform3f;
-    typedef boost::shared_ptr <CenterOfMassComputation>
+    typedef std::shared_ptr <CenterOfMassComputation>
       CenterOfMassComputationPtr_t;
   } // namespace model
 } // namespace hpp

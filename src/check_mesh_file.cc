@@ -22,7 +22,7 @@
 # include <hpp/fcl/BVH/BVH_model.h>
 
 typedef fcl::BVHModel< fcl::OBBRSS > PolyhedronType;
-typedef boost::shared_ptr <PolyhedronType> PolyhedronPtrType;
+typedef std::shared_ptr <PolyhedronType> PolyhedronPtrType;
 
 bool buildMesh (const aiScene* scene,
     const aiNode* node,
