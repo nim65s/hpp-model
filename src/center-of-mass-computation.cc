@@ -31,7 +31,7 @@ namespace hpp {
       std::vector <JointTreeElement_t*> children;
       JointTreeElement_t (const JointPtr_t& joint) :
         parent (NULL), j (joint), children () {
-          massCom_.setValue (0);
+          massCom_.setZero ();
         }
     };
 
@@ -65,7 +65,7 @@ namespace hpp {
     {
       assert (mass_ > 0);
       if (flag & Device::COM) {
-        massCom_.setValue (0);
+        massCom_.setZero ();
         for (JointTreeList::iterator it = rootJointTrees_.begin ();
             it != rootJointTrees_.end (); ++it) {
           (*it)->j->computeMassTimesCenterOfMass ();

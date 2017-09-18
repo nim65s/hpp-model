@@ -43,7 +43,7 @@ namespace hpp {
         Transform3f t = (*itJ)->currentTransformation () *
           (*itJ)->linkInJointFrame ();
         for (int i = 0; i < 3; ++i) pos.p[i] = t.getTranslation  ()[i];
-        for (int i = 0; i < 4; ++i) pos.q[i] = t.getQuatRotation ()[i];
+        for (int i = 0; i < 4; ++i) pos.q[i] = t.getQuatRotation ().vec()(i);
         fgm.push_back (pos);
       }
       return fgm;

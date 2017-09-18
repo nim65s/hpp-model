@@ -98,49 +98,49 @@ namespace hpp {
       p [0] = geom->aabb_local.min_ [0];
       p [1] = geom->aabb_local.min_ [1];
       p [2] = geom->aabb_local.min_ [2];
-      value_type newLength = positionInJoint.transform (p).length ();
+      value_type newLength = positionInJoint.transform (p).norm ();
       if (newLength > radius_) radius_ = newLength;
 
       p [0] = geom->aabb_local.max_ [0];
       p [1] = geom->aabb_local.min_ [1];
       p [2] = geom->aabb_local.min_ [2];
-      newLength = positionInJoint.transform (p).length ();
+      newLength = positionInJoint.transform (p).norm ();
       if (newLength > radius_) radius_ = newLength;
 
       p [0] = geom->aabb_local.min_ [0];
       p [1] = geom->aabb_local.max_ [1];
       p [2] = geom->aabb_local.min_ [2];
-      newLength = positionInJoint.transform (p).length ();
+      newLength = positionInJoint.transform (p).norm ();
       if (newLength > radius_) radius_ = newLength;
 
       p [0] = geom->aabb_local.max_ [0];
       p [1] = geom->aabb_local.max_ [1];
       p [2] = geom->aabb_local.min_ [2];
-      newLength = positionInJoint.transform (p).length ();
+      newLength = positionInJoint.transform (p).norm ();
       if (newLength > radius_) radius_ = newLength;
 
       p [0] = geom->aabb_local.min_ [0];
       p [1] = geom->aabb_local.min_ [1];
       p [2] = geom->aabb_local.max_ [2];
-      newLength = positionInJoint.transform (p).length ();
+      newLength = positionInJoint.transform (p).norm ();
       if (newLength > radius_) radius_ = newLength;
 
       p [0] = geom->aabb_local.max_ [0];
       p [1] = geom->aabb_local.min_ [1];
       p [2] = geom->aabb_local.max_ [2];
-      newLength = positionInJoint.transform (p).length ();
+      newLength = positionInJoint.transform (p).norm ();
       if (newLength > radius_) radius_ = newLength;
 
       p [0] = geom->aabb_local.min_ [0];
       p [1] = geom->aabb_local.max_ [1];
       p [2] = geom->aabb_local.max_ [2];
-      newLength = positionInJoint.transform (p).length ();
+      newLength = positionInJoint.transform (p).norm ();
       if (newLength > radius_) radius_ = newLength;
 
       p [0] = geom->aabb_local.max_ [0];
       p [1] = geom->aabb_local.max_ [1];
       p [2] = geom->aabb_local.max_ [2];
-      newLength = positionInJoint.transform (p).length ();
+      newLength = positionInJoint.transform (p).norm ();
       if (newLength > radius_) radius_ = newLength;
       hppDout (info, "joint " << joint_->name () << ", radius " << radius_);
     }

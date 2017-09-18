@@ -46,7 +46,7 @@ namespace hpp {
       positionInParentFrame_.setIdentity ();
       linkInJointFrame_.setIdentity ();
       T3f_.setIdentity ();
-      massCom_.setValue (0);
+      massCom_.setZero ();
       neutralConfiguration_.resize (configSize);
       neutralConfiguration_.setZero ();
     }
@@ -198,7 +198,7 @@ namespace hpp {
 
     void Joint::computeMassTimesCenterOfMass ()
     {
-      massCom_.setValue (0);
+      massCom_.setZero ();
       if (body_) {
 	massCom_ = currentTransformation_.transform
 	  (body_->localCenterOfMass ()) * body_->mass ();
@@ -234,7 +234,7 @@ namespace hpp {
     void JointAnchor::computeMaximalDistanceToParent ()
     {
       maximalDistanceToParent_ =
-	positionInParentFrame ().getTranslation ().length ();
+	positionInParentFrame ().getTranslation ().norm ();
     }
 
     void JointAnchor::computePosition (ConfigurationIn_t,
@@ -278,7 +278,7 @@ namespace hpp {
     void JointSO3::computeMaximalDistanceToParent ()
     {
       maximalDistanceToParent_ =
-	positionInParentFrame ().getTranslation ().length ();
+	positionInParentFrame ().getTranslation ().norm ();
     }
 
     void JointSO3::computePosition (ConfigurationIn_t configuration,
@@ -351,14 +351,14 @@ namespace hpp {
     void JointRotation::computeMaximalDistanceToParent ()
     {
       maximalDistanceToParent_ =
-	positionInParentFrame ().getTranslation ().length ();
+	positionInParentFrame ().getTranslation ().norm ();
     }
 
     void JointRotation::writeSubJacobian (const JointPtr_t& child)
     {
       size_type col = rankInVelocity ();
       // Get rotation axis
-      axis_ = currentTransformation_.getRotation ().getColumn (0);
+      axis_ = currentTransformation_.getRotation ().col (0);
       O2O1_ = currentTransformation_.getTranslation () -
 	child->currentTransformation ().getTranslation ();
       cross_ = O2O1_.cross (axis_);
@@ -375,7 +375,7 @@ namespace hpp {
     {
       if (mass_ > 0) {
 	size_type col = rankInVelocity ();
-	axis_ = currentTransformation_.getRotation ().getColumn (0);
+	axis_ = currentTransformation_.getRotation ().col (0);
 	com_ = massCom_ * (1/mass_);
 	const fcl::Vec3f& center (currentTransformation_.getTranslation ());
 	O2O1_ = center - com_;
@@ -453,14 +453,14 @@ namespace hpp {
 	  ("Dimension of translation should be between 1 and 3.");
       }
       configuration_ = new TranslationJointConfig <dimension>;
-      t_.setValue (0);
+      t_.setZero ();
     }
 
     template <size_type dimension>
     JointTranslation <dimension>::JointTranslation
     (const JointTranslation <dimension>& joint) : Joint (joint), t_ ()
     {
-      t_.setValue (0);
+      t_.setZero ();
     }
 
     template <size_type dimension>
@@ -489,70 +489,70 @@ namespace hpp {
 	switch (dimension) {
 	case 1:
 	  {
-	    fcl::Vec3f u0 = pos.getRotation ().getColumn (0);
-	    value_type d = (T + lowerBound (0)*u0).length ();
+	    fcl::Vec3f u0 = pos.getRotation ().col (0);
+	    value_type d = (T + lowerBound (0)*u0).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
-	    d = (T + upperBound (0)*u0).length ();
+	    d = (T + upperBound (0)*u0).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	  }
 	  break;
 	case 2:
 	  {
-	    fcl::Vec3f u0 = pos.getRotation ().getColumn (0);
-	    fcl::Vec3f u1 = pos.getRotation ().getColumn (1);
+	    fcl::Vec3f u0 = pos.getRotation ().col (0);
+	    fcl::Vec3f u1 = pos.getRotation ().col (1);
 	    value_type d = (T + lowerBound (0)*u0 +
-			    lowerBound (1)*u1).length ();
+			    lowerBound (1)*u1).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
-	    d = (T + upperBound (0)*u0 + lowerBound (1)*u1).length ();
+	    d = (T + upperBound (0)*u0 + lowerBound (1)*u1).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
-	    d = (T + lowerBound (0)*u0 + upperBound (1)*u1).length ();
+	    d = (T + lowerBound (0)*u0 + upperBound (1)*u1).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
-	    d = (T + upperBound (0)*u0 + upperBound (1)*u1).length ();
+	    d = (T + upperBound (0)*u0 + upperBound (1)*u1).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	  }
 	  break;
 	case 3:
 	  {
-	    fcl::Vec3f u0 = pos.getRotation ().getColumn (0);
-	    fcl::Vec3f u1 = pos.getRotation ().getColumn (1);
-	    fcl::Vec3f u2 = pos.getRotation ().getColumn (2);
+	    fcl::Vec3f u0 = pos.getRotation ().col (0);
+	    fcl::Vec3f u1 = pos.getRotation ().col (1);
+	    fcl::Vec3f u2 = pos.getRotation ().col (2);
 	    value_type d = (T + lowerBound (0)*u0 +
 			    lowerBound (1)*u1 +
-			    lowerBound (2)*u2).length ();
+			    lowerBound (2)*u2).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	    d = (T + upperBound (0)*u0 + lowerBound (1)*u1 +
-		 lowerBound (2)*u2).length ();
+		 lowerBound (2)*u2).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	    d = (T + lowerBound (0)*u0 + upperBound (1)*u1 +
-		 lowerBound (2)*u2).length ();
+		 lowerBound (2)*u2).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	    d = (T + upperBound (0)*u0 + upperBound (1)*u1 +
-		 lowerBound (2)*u2).length ();
+		 lowerBound (2)*u2).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	    d = (T + lowerBound (0)*u0 + lowerBound (1)*u1 +
-		 upperBound (2)*u2).length ();
+		 upperBound (2)*u2).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	    d = (T + upperBound (0)*u0 + lowerBound (1)*u1 +
-		 upperBound (2)*u2).length ();
+		 upperBound (2)*u2).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	    d = (T + lowerBound (0)*u0 + upperBound (1)*u1 +
-		 upperBound (2)*u2).length ();
+		 upperBound (2)*u2).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	    d = (T + upperBound (0)*u0 + upperBound (1)*u1 +
-		 upperBound (2)*u2).length ();
+		 upperBound (2)*u2).norm ();
 	    if (d > maximalDistanceToParent_)
 	      maximalDistanceToParent_ = d;
 	  }
@@ -589,7 +589,7 @@ namespace hpp {
       size_type col = rankInVelocity ();
       // Get translation axis
       for (unsigned int i=0; i<dimension; ++i) {
-	axis_[i] = currentTransformation_.getRotation ().getColumn (i);
+	axis_[i] = currentTransformation_.getRotation ().col (i);
 	child->jacobian () (0, col+i) = axis_ [i][0];
 	child->jacobian () (1, col+i) = axis_ [i][1];
 	child->jacobian () (2, col+i) = axis_ [i][2];
@@ -604,7 +604,7 @@ namespace hpp {
 	size_type col = rankInVelocity ();
 	// Get translation axis
 	for (unsigned int i=0; i<dimension; ++i) {
-	  axis_ [i] = currentTransformation_.getRotation ().getColumn (i);
+	  axis_ [i] = currentTransformation_.getRotation ().col (i);
 	  jacobian (0, col+i) = (mass_/totalMass) * axis_ [i][0];
 	  jacobian (1, col+i) = (mass_/totalMass) * axis_ [i][1];
 	  jacobian (2, col+i) = (mass_/totalMass) * axis_ [i][2];
@@ -619,8 +619,8 @@ namespace hpp {
       const fcl::Vec3f& t (trans.getTranslation ());
       const fcl::Quaternion3f& q (trans.getQuatRotation ());
       os << "rotation matrix: " << R << "\\n";
-      os << "rotation quaternion: " << "(" << q.getW () << ", "
-	 << q.getX () << ", " << q.getY () << ", " << q.getZ () << ")"
+      os << "rotation quaternion: " << "(" << q.w () << ", "
+	 << q.x () << ", " << q.y () << ", " << q.z () << ")"
 	 << "\\n";
       os << "translation: " << t;
       return os;
@@ -695,8 +695,8 @@ namespace fcl {
     const fcl::Vec3f& t (trans.getTranslation ());
     const fcl::Quaternion3f& q (trans.getQuatRotation ());
     os << "rotation matrix: " << R << std::endl;
-    os << "rotation quaternion: " << "(" << q.getW () << ", "
-       << q.getX () << ", " << q.getY () << ", " << q.getZ () << ")"
+    os << "rotation quaternion: " << "(" << q.w () << ", "
+       << q.x () << ", " << q.y () << ", " << q.z () << ")"
        << std::endl;
     os << "translation: " << t << std::endl;
     return os;

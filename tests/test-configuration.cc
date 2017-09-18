@@ -109,8 +109,10 @@ BOOST_AUTO_TEST_CASE(toEigenFunction)
   using namespace hpp::model;
   vector3_t fcl_v;
   matrix3_t fcl_m;
-  fcl_v.setValue (1);
-  fcl_m.setValue (3);
+  fcl_v << 1, 1, 1;
+  fcl_m << 3, 3, 3,
+           3, 3, 3,
+           3, 3, 3;
 
   vector_t eigen_v(3);
   matrix_t eigen_m(3,3);
